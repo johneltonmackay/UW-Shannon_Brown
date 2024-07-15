@@ -1,0 +1,354 @@
+<?xml version="1.0"?><!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<#assign header_height = 12 />
+<#assign customer_header_height = 0 />
+<#assign enable_gst_columns = false />
+<#assign use_location_address = false />
+<#assign countryMap = { "AU": "Australia", "NZ": "New Zealand", "US": "United States", "CA":"Canada"  }>
+<#assign abnacn_value = ""/>
+<#assign abnacn_header = ""/>
+
+<#function isTrue value>
+	<#return (value?is_boolean && value) || (value?is_string && value == "T") || (value?is_number && value == 1)>
+</#function>
+
+<#function getCountryName countrycode>
+    <#assign countryName = countrycode />
+    <#list countryMap as code, name>
+        <#if code == countrycode>
+           <#assign countryName = name />
+        </#if>
+    </#list>
+	<#return countryName>
+</#function>
+
+<#assign Translations = nstranslation.load({
+    "collections":[{
+        "alias": "collection",
+        "collection": "custcollection_anz_loc_translations",
+        "keys": [ "TMPL_ORDER_NUMBER","DATE", "PHONE_FLD_LBL","EMAIL_FLD_LBL",
+        "URL_FLD_LBL","TMPL_PAGE_TOTAL_OF", "TMPL_TIMESTAMP","TMPL_BILL_TO",
+        "ADDRESS_LBL","TMPL_PURCHASE_ORDER", "TMPL_SALESREP", "TMPL_SHIP_DATE","TMPL_TRACKING_NUMBER",
+        "TMPL_CUSTOMER_CONTACT", "TMPL_ITEM", "TMPL_ORDER_QTY", "TMPL_SHIP_QTY","TMPL_TOTAL_INCLUDING_GST" ]
+    }]
+})>
+
+<#if preferences??>
+    <#assign use_location_address = isTrue(preferences.printlocaddress) />
+</#if>
+
+<#if subsidiary??>
+<#if subsidiary.federalidnumber?has_content>
+       <#assign abnacn_value = subsidiary.federalidnumber />
+       <#assign abnacn_header = "ABN"  />
+<#else>
+    <#if subsidiary.state1taxnumber?has_content>
+            <#assign abnacn_value = subsidiary.state1taxnumber />
+            <#assign abnacn_header = "ACN" />
+    </#if>            
+</#if>
+<#else>
+    <#if companyinformation.employerid?has_content>
+       <#assign abnacn_value = companyinformation.employerid />
+       <#assign abnacn_header = "ABN"  />
+<#else>
+    <#if companyinformation.state1taxnumber?has_content>
+            <#assign abnacn_value = companyinformation.state1taxnumber />
+            <#assign abnacn_header = "ACN" />
+    </#if>            
+</#if>   
+</#if>
+
+<#if subsidiary??>
+    <#if subsidiary.custrecord_anz_dpp_adj_header_height?has_content>
+        <#assign customer_header_height=subsidiary.custrecord_anz_dpp_adj_header_height/>
+    </#if>    
+    <#if subsidiary.custrecord_anz_dpp_userid_gendate_cb?has_content>
+        <#assign enable_userId_timeStamp=subsidiary.custrecord_anz_dpp_userid_gendate_cb/>
+    </#if>
+    <#if use_location_address && salesorder.location?has_content >
+        <#assign header_details = {
+            "company_legalname" : salesorder.location.name,
+            "company_addr1" : salesorder.location.mainaddress.address1,
+            "company_addr2" : salesorder.location.mainaddress.address2,
+            "company_city" : salesorder.location.mainaddress.city,
+            "company_state" : salesorder.location.mainaddress.state,
+            "company_zip": salesorder.location.mainaddress.zip,
+            "company_country": salesorder.location.mainaddress.country,
+            "company_phone": subsidiary.custrecord_anz_dpp_phone,
+            "company_email": subsidiary.custrecord_anz_dpp_email,
+            "company_url": subsidiary.custrecord_anz_dpp_url,
+            "company_abn": abnacn_value
+        }/>
+        <#assign logo_url = salesorder.custbody_anz_logo_sourcefrom_location@url />
+    <#else>
+        <#assign header_details = {
+            "company_legalname" : subsidiary.legalname,
+            "company_addr1" : subsidiary.mainaddress.addr1,
+            "company_addr2" : subsidiary.mainaddress.addr2,
+            "company_city" : subsidiary.mainaddress.city,
+            "company_state" : subsidiary.mainaddress.state,
+            "company_zip": subsidiary.mainaddress.zip,
+            "company_country": subsidiary.mainaddress.country,
+            "company_phone": subsidiary.custrecord_anz_dpp_phone,
+            "company_email": subsidiary.custrecord_anz_dpp_email,
+            "company_url": subsidiary.custrecord_anz_dpp_url,
+            "company_abn": abnacn_value
+        }/>
+         <#assign logo_url = subsidiary.logo@url />
+    </#if>
+<#else>
+    <#if companyinformation.custrecord_anz_dpp_adj_header_height?length != 0>
+        <#assign customer_header_height=companyinformation.custrecord_anz_dpp_adj_header_height/>
+    </#if>
+    <#if companyinformation.custrecord_anz_dpp_userid_gendate_cb?length != 0>
+        <#assign enable_userId_timeStamp=companyinformation.custrecord_anz_dpp_userid_gendate_cb/>
+    </#if>
+    <#if use_location_address && salesorder.location?has_content>
+        <#assign header_details = {
+            "company_legalname" : salesorder.location.name,
+            "company_addr1" : salesorder.location.mainaddress.address1,
+            "company_addr2" : salesorder.location.mainaddress.address2,
+            "company_city" : salesorder.location.mainaddress.city,
+            "company_state" : salesorder.location.mainaddress.state,
+            "company_zip": salesorder.location.mainaddress.zip,
+            "company_country": salesorder.location.mainaddress.country,
+            "company_phone": companyinformation.custrecord_anz_dpp_phone,
+            "company_email": companyinformation.custrecord_anz_dpp_email,
+            "company_url": companyinformation.custrecord_anz_dpp_url,
+            "company_abn": abnacn_value
+        }/>
+        <#assign logo_url = salesorder.custbody_anz_logo_sourcefrom_location@url />
+    <#else>
+        <#assign header_details = {
+            "company_legalname" : companyinformation.legalname,
+            "company_addr1" : companyinformation.address1,
+            "company_addr2" : companyinformation.address2,
+            "company_city" : companyinformation.city,
+            "company_state" : companyinformation.state,
+            "company_zip" : companyinformation.zip,
+            "company_country" : companyinformation.country,
+            "company_phone": companyinformation.custrecord_anz_dpp_phone,
+            "company_email": companyinformation.custrecord_anz_dpp_email,
+            "company_url": companyinformation.custrecord_anz_dpp_url,
+            "company_abn": abnacn_value
+        }/>
+        <#assign logo_url = companyInformation.logoUrl />
+    </#if>
+</#if>
+
+<#function getHeaderHeight lineContent="">
+    <#assign headerHeight = 0>
+    <#if lineContent?string?has_content>
+        <#if lineContent?length gt 25 >
+             <#assign headerHeight = 2>               
+        <#else>
+            <#assign headerHeight = 1>
+        </#if>
+    </#if>    
+    <#return headerHeight>    
+</#function>
+
+<pdf>
+    <head>
+        <link name="NotoSans" type="font" subtype="truetype" src="${nsfont.NotoSans_Regular}" src-bold="${nsfont.NotoSans_Bold}" src-italic="${nsfont.NotoSans_Italic}" src-bolditalic="${nsfont.NotoSans_BoldItalic}" bytes="2" />
+        <#if .locale == "zh_CN">
+        <link name="NotoSansCJKsc" type="font" subtype="opentype" src="${nsfont.NotoSansCJKsc_Regular}" src-bold="${nsfont.NotoSansCJKsc_Bold}" bytes="2" />
+        <#elseif .locale == "zh_TW">
+        <link name="NotoSansCJKtc" type="font" subtype="opentype" src="${nsfont.NotoSansCJKtc_Regular}" src-bold="${nsfont.NotoSansCJKtc_Bold}" bytes="2" />
+        <#elseif .locale == "ja_JP">
+        <link name="NotoSansCJKjp" type="font" subtype="opentype" src="${nsfont.NotoSansCJKjp_Regular}" src-bold="${nsfont.NotoSansCJKjp_Bold}" bytes="2" />
+        <#elseif .locale == "ko_KR">
+        <link name="NotoSansCJKkr" type="font" subtype="opentype" src="${nsfont.NotoSansCJKkr_Regular}" src-bold="${nsfont.NotoSansCJKkr_Bold}" bytes="2" />
+        <#elseif .locale == "th_TH">
+        <link name="NotoSansThai" type="font" subtype="opentype" src="${nsfont.NotoSansThai_Regular}" src-bold="${nsfont.NotoSansThai_Bold}" bytes="2" />
+        </#if>
+        <macrolist>
+            <macro id="nlheader">
+                <table style="width: 100%; font-size: 10pt;">
+                    <tr>
+                        <td rowspan="9" style="padding: 0;">
+                            <#if logo_url?has_content>
+                            <div id="logo_url">
+                                <img src="${logo_url}" style="float: left; margin: 7px" />
+                            </div>
+                            </#if>
+                        </td>
+                        <td rowspan="9" style="padding: 0;">
+                        </td>
+                        <td align="right" style="padding: 0;">
+                            <table>
+                                <tr>
+                                    <td id="document_title" align="right" style="padding: -3px; font-size: 24pt;">${record@title}</td>
+                                </tr>
+                                <tr>
+                                    <td id="tranid">
+                                        <p align="right" style="padding: 6px 0px 0px 0px;"><b>${Translations.collection.TMPL_ORDER_NUMBER}:</b> ${salesorder.tranid}</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td id="trandate" align="right" style="padding: 4px; white-space: wrap;"><b>${Translations.collection.DATE}:</b> ${record.trandate}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>                
+                </table>
+                <table style="width: 100%; font-size: 10pt;">
+                    <tr>
+                        <td rowspan="9" style="padding: 0;">
+                            <#list header_details as key, value>
+                                <#if value?has_content>
+                                    <#assign header_height = header_height + getHeaderHeight(value)/>
+                                    <#if key == "company_phone">
+                                        <span id="phone_label">${Translations.collection.PHONE_FLD_LBL}</span>: <span id="${key}">${value}</span><br/>
+                                    <#elseif key == "company_email">
+                                        <span id="email_label">${Translations.collection.EMAIL_FLD_LBL}</span>: <span id="${key}">${value}</span><br/>
+                                    <#elseif key == "company_url">
+                                        <span id="url_label">${Translations.collection.URL_FLD_LBL}</span>: <span id="${key}">${value}</span><br/>
+                                    <#elseif key == "company_abn">
+                                        <span id="abn_label">${abnacn_header}</span>: <span id="${key}">${value}</span><br/>
+                                    <#else>
+                                        <span id="${key}">${value}</span><br/>
+                                    </#if>
+                                </#if>
+                            </#list>
+                            <#if header_height lte 20>
+                                <#assign header_height = 20/>  
+                            </#if>
+                            <#if customer_header_height??>
+                                <#assign header_height = header_height + customer_header_height/>  
+                            </#if> 
+                        </td>
+                    </tr>
+                </table>
+            </macro>
+            <macro id="nlfooter">
+                <table style="width: 100%; font-size: 8pt;">
+                    <#assign currentTime = .now>
+                    <#assign formattedTimestamp = currentTime?string("HH:mm:ss")>
+                    <tr>
+                        <td align="right" style="padding: 0;"><p align="right"><pagenumber/> ${Translations.collection.TMPL_PAGE_TOTAL_OF} <totalpages/></p></td>                
+                    </tr>
+                    <#if enable_userId_timeStamp>
+                    <tr>
+                        <td style="width: 97%;color: #333333; font-size: 8pt; padding: 0" align="right" id="user_id">${user.firstname} ${user.middlename} ${user.lastname}</td>
+                    </tr>            
+                    <tr>
+                        <td style="width: 97%;color: #333333; font-size: 8pt; padding: 0" align="right" id="timestamp">${Translations.collection.TMPL_TIMESTAMP}: ${.now?date} ${formattedTimestamp}</td>
+                    </tr>
+                    </#if>                
+                </table>      
+            </macro>
+        </macrolist>
+        <style type="text/css">* {
+            <#if .locale == "zh_CN">
+            font-family: NotoSans, NotoSansCJKsc, sans-serif;
+            <#elseif .locale == "zh_TW">
+            font-family: NotoSans, NotoSansCJKtc, sans-serif;
+            <#elseif .locale == "ja_JP">
+            font-family: NotoSans, NotoSansCJKjp, sans-serif;
+            <#elseif .locale == "ko_KR">
+            font-family: NotoSans, NotoSansCJKkr, sans-serif;
+            <#elseif .locale == "th_TH">
+            font-family: NotoSans, NotoSansThai, sans-serif;
+            <#else>
+            font-family: NotoSans, sans-serif;
+            </#if>
+                    }
+                    table {
+                    font-size: 9pt;
+                    table-layout: fixed;
+                    }
+                    th {
+                    font-weight: bold;
+                    font-size: 8pt;
+                    vertical-align: middle;
+                    padding: 5px 6px 3px;
+                    background-color: #e3e3e3;
+                    color: #333333;
+                    }
+                    td {
+                    padding: 4px 6px;
+                    }
+                    td p { align:left }
+                    table.header td {
+                    padding: 0;
+                    font-size: 10pt;
+                    }
+                    td.footer_message {
+                    word-break: break-all;
+                    }
+        </style>
+    </head>
+    <body header="nlheader" header-height="${header_height}%" footer="nlfooter" footer-height="10pt" padding="0.5in 0.5in 0.5in 0.5in" size="Letter">
+        <table style="width: 100%; margin-top: 10px;  padding: 0px 0px 15px 0px;">
+            <tr>
+                <td colspan="3" style="font-size: 8pt; padding: 6px 0 2px; font-weight: bold; color: #333333;"><span id="billaddress_label">${Translations.collection.TMPL_BILL_TO}</span></td>
+                <td colspan="3" style="font-size: 8pt; padding: 6px 0 2px; font-weight: bold; color: #333333;"><span id="shipaddress_label">${Translations.collection.ADDRESS_LBL}</span></td>
+            </tr>
+            <tr>
+                <td colspan="3" style="padding: 0;">
+                    <#if salesorder.entity.companyname?has_content>
+                    <span id="bill_companyname">${salesorder.entity.companyname}</span><br/>
+                    <#else>
+                    <span id="bill_customername">${salesorder.entity.firstname} ${salesorder.entity.lastname}</span><br/>
+                    </#if>
+                    <span id="billaddress">${salesorder.billaddress}</span><br />
+                </td>
+                <td colspan="3" style="padding: 0;">
+                    <#if salesorder.entity.companyname?has_content>
+                    <span id="ship_companyname">${salesorder.entity.companyname}</span><br/>
+                    <#else>
+                    <span id="ship_customername">${salesorder.entity.firstname} ${salesorder.entity.lastname}</span><br/>
+                    </#if>
+                    <span id="shipaddress">${salesorder.shipaddress}</span><br />
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%; margin-top: 10px;">
+            <tr>
+                <th id="otherrefnum_label">${Translations.collection.TMPL_PURCHASE_ORDER} #</th>
+                <th id="salesrep_label">${Translations.collection.TMPL_SALESREP}</th>
+                <th id="shipdate_label">${Translations.collection.TMPL_SHIP_DATE}</th>
+                <th id="tracking_label">${Translations.collection.TMPL_TRACKING_NUMBER}</th>
+                <th id="customercontact_label">${Translations.collection.TMPL_CUSTOMER_CONTACT}</th>
+            </tr>
+            <tr>
+                <td style="padding-top: 2px;" id="otherrefnum">${salesorder.otherrefnum}</td>
+                <td style="padding-top: 2px;" id="salesrep">${salesorder.salesrep}</td>
+                <td style="padding-top: 2px;" id="shipdate">${record.trandate}</td>
+                <td style="padding-top: 2px;" id="trackingnumber">${salesorder.linkedtrackingnumbers}</td>
+                <td style="padding-top: 2px;" id="customercontact">
+                <#if salesorder.entity.companyname?has_content>
+                    ${salesorder.entity.companyname}
+                    <#else>
+                    ${salesorder.entity.firstname} ${salesorder.entity.lastname}
+                    </#if>
+                </td>
+            </tr>
+        </table>
+
+        <#if salesorder.item?has_content>
+            <table style="width: 100%; margin-top: 10px;"><!-- start items -->
+                <#list salesorder.item as item>
+                    <#if item_index==0>
+                        <thead>
+                            <tr>
+                                <th colspan="12" style="padding: 10px 6px;" id="item_label">${Translations.collection.TMPL_ITEM}</th>
+                                <th align="center" colspan="8" style="padding: 10px 6px;" id="ordered_quantity_label">${Translations.collection.TMPL_ORDER_QTY}</th>
+                                <th align="center" colspan="8" style="padding: 10px 6px;" id="ship_quantity_label">${Translations.collection.TMPL_SHIP_QTY}</th>
+                            </tr>
+                        </thead>
+                    </#if>
+                    <tr>
+                        <td colspan="12"><span style="font-weight: bold; line-height: 150%; color: #333333;" id="item_name_${item?counter}">${item.item}</span><br /><span id="item_description_${item?counter}">${item.description}</span></td>
+                        <td align="center" colspan="8" line-height="150%" id="ordered_quantity_${item?counter}">${item.quantityordered}</td>
+                        <td align="center" colspan="8" line-height="150%" id="ship_quantity_${item?counter}">${item.quantity}</td>
+                    </tr>
+                </#list><!-- end items -->
+            </table>
+            <hr style="width: 100%; color: #000000; background-color: #000000; height: 1px;" />
+            <br />  
+        </#if>        
+          
+    </body>
+</pdf>

@@ -1,0 +1,346 @@
+<?xml version="1.0"?><!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf>
+<head>
+	<link name="NotoSans" type="font" subtype="truetype" src="${nsfont.NotoSans_Regular}" src-bold="${nsfont.NotoSans_Bold}" src-italic="${nsfont.NotoSans_Italic}" src-bolditalic="${nsfont.NotoSans_BoldItalic}" bytes="2" />
+	<#if .locale == "zh_CN">
+		<link name="NotoSansCJKsc" type="font" subtype="opentype" src="${nsfont.NotoSansCJKsc_Regular}" src-bold="${nsfont.NotoSansCJKsc_Bold}" bytes="2" />
+	<#elseif .locale == "zh_TW">
+		<link name="NotoSansCJKtc" type="font" subtype="opentype" src="${nsfont.NotoSansCJKtc_Regular}" src-bold="${nsfont.NotoSansCJKtc_Bold}" bytes="2" />
+	<#elseif .locale == "ja_JP">
+		<link name="NotoSansCJKjp" type="font" subtype="opentype" src="${nsfont.NotoSansCJKjp_Regular}" src-bold="${nsfont.NotoSansCJKjp_Bold}" bytes="2" />
+	<#elseif .locale == "ko_KR">
+		<link name="NotoSansCJKkr" type="font" subtype="opentype" src="${nsfont.NotoSansCJKkr_Regular}" src-bold="${nsfont.NotoSansCJKkr_Bold}" bytes="2" />
+	<#elseif .locale == "th_TH">
+		<link name="NotoSansThai" type="font" subtype="opentype" src="${nsfont.NotoSansThai_Regular}" src-bold="${nsfont.NotoSansThai_Bold}" bytes="2" />
+	</#if>
+	
+    <macrolist>
+        <macro id="nlheader">
+			<table class="header" style="width: 100%;">
+				<tr>
+					<td style="width: 50%; text-align: left;">
+						<#if salesorder.custbody_ss_packslip_sub_logo?length != 0 >
+							<img src="${salesorder.custbody_ss_packslip_sub_logo@url}" class="logo" style="width: 190px; height: 40px"/>
+						<#elseif companyInformation.logoUrl?length != 0 >
+							<img src="${companyInformation.logoUrl}" class="logo" style="width: 190px; height: 40px"/>
+						</#if>
+					</td>
+					<td style="width: 50%;" align="right">
+						<p class="title po-details" style="text-align: right;">Packing Slip</p>
+						<!-- <p class="title po-details" style="text-align: right;">${record@title}</p> -->
+						<p class="number po-details" style="text-align: right;"><strong>Order Number</strong>: ${salesorder.tranid}</p>
+						<p class="number po-details" style="text-align: right;"><strong>Date</strong>: ${record.trandate}</p>
+					</td>
+				</tr>
+			</table>
+
+            <!-- <table class="header" style="width: 100%;">
+				<tr>
+					<td style="width: 50%; text-align: left;">
+						<#if salesorder.custbody_ss_packslip_sub_logo?has_content>
+							<img src="${salesorder.custbody_ss_packslip_sub_logo@url}" class="logo" />
+						</#if>
+					</td>
+					<td style="width: 50%;" align="right">
+						<p class="title po-details" style="text-align: right;">Packing Slip</p>
+						<p class="title po-details" style="text-align: right;">${record@title}</p>
+						<p class="number po-details" style="text-align: right;"><strong>Order Number</strong>: ${salesorder.tranid}</p>
+						<p class="number po-details" style="text-align: right;"><strong>Date</strong>: ${record.trandate}</p>
+					</td>
+				</tr>
+			</table>
+			-->
+
+			<table style="width: 100%;">
+				<tr>
+					<td>
+						<p class="nameandaddress" style="font-size: 11pt;"><b>${salesorder.subsidiary.name}</b></p>
+						<p class="nameandaddress">${salesorder.custbody_ss_packslip_sub_add}</p>
+						<p class="nameandaddress contact_info"><b>P:</b> ${salesorder.custbody_ss_packslip_sub_phone} </p>
+						<p class="nameandaddress contact_info"><b>E:</b> ${salesorder.custbody_ss_packslip_sub_email}</p>
+						<p class="nameandaddress contact_info"><b>W:</b> ${salesorder.custbody_ss_packslip_sub_url}</p>
+						<p class="nameandaddress contact_info"><b>ABN:</b> ${salesorder.custbody_ss_packslip_sub_abn}</p>
+					</td>
+				</tr>
+			</table>
+
+			<!-- <table style="width: 100%;">
+				<tr>
+					<td>
+						<p class="nameandaddress" style="font-size: 11pt;"><b>${salesorder.custbody_ss_packslip_sub_name}</b></p>
+						<p class="nameandaddress">${salesorder.custbody_ss_packslip_sub_add}</p>
+						<p class="nameandaddress contact_info"><b>P:</b> ${salesorder.custbody_ss_packslip_sub_phone} </p>
+						<p class="nameandaddress contact_info"><b>E:</b> ${salesorder.custbody_ss_packslip_sub_email}</p>
+						<p class="nameandaddress contact_info"><b>W:</b> ${salesorder.custbody_ss_packslip_sub_url}</p>
+						<p class="nameandaddress contact_info"><b>ABN:</b> ${salesorder.custbody_ss_packslip_sub_abn}</p>
+					</td>
+				</tr>
+			</table>  -->
+        </macro>
+        <macro id="nlfooter">
+            <table class="footer" style="width: 100%;">
+				<tr>
+					<td>&nbsp;</td>
+					<td align="right"><pagenumber/> of <totalpages/></td>
+				</tr>
+			</table>
+        </macro>
+    </macrolist>
+    <style type="text/css">* {
+		<#if .locale == "zh_CN">
+			font-family: NotoSans, NotoSansCJKsc, sans-serif;
+		<#elseif .locale == "zh_TW">
+			font-family: NotoSans, NotoSansCJKtc, sans-serif;
+		<#elseif .locale == "ja_JP">
+			font-family: NotoSans, NotoSansCJKjp, sans-serif;
+		<#elseif .locale == "ko_KR">
+			font-family: NotoSans, NotoSansCJKkr, sans-serif;
+		<#elseif .locale == "th_TH">
+			font-family: NotoSans, NotoSansThai, sans-serif;
+		<#else>
+			font-family: NotoSans, sans-serif;
+		</#if>
+			font-size: 9pt;
+		}
+		table {
+			table-layout: auto;
+			width: 100%;
+			display: block;
+		}
+        th {
+            font-weight: bold;
+            vertical-align: middle;
+            padding: 5px 6px 3px;
+            background-color: #e3e3e3;
+            color: #333333;
+        }
+        td {
+            padding: 4px 6px;
+        }
+		td p { align:left }
+        b {
+            font-weight: bold;
+            color: #333333;
+        }
+        table.header td {
+            padding: 0px;
+        }
+        table.header p.po-details {
+            padding-top: 10px !important; margin: 0 !important;
+        }
+        table.footer td {
+            padding: 0px;
+        }
+        table.itemtable th {
+            padding-bottom: 10px;
+            padding-top: 10px;
+        }
+        table.body td {
+            padding-top: 2px;
+        }
+        table.total {
+            page-break-inside: avoid;
+        }
+		.services tr td { border-collapse: collapse; border: 1px solid #999999; padding: 5px 10px; margin: 0; }
+		.services tr { padding: 0; margin: 0; }
+		.services tr th { padding: 5px 10px; color: white; }
+		.services-header th { background-color: #004781 !important; }
+        tr.totalrow {
+            background-color: #e3e3e3;
+            line-height: 200%;
+        }
+        td.totalboxtop {
+            background-color: #e3e3e3;
+        }
+        td.addressheader {
+            padding-top: 6px;
+            padding-bottom: 2px;
+        }
+        td.address {
+            padding-top: 0px;
+        }
+        td.totalboxmid {
+            font-size: 28pt;
+            padding-top: 20px;
+            background-color: #e3e3e3;
+        }
+        td.totalboxbot {
+            background-color: #e3e3e3;
+            font-weight: bold;
+        }
+        p.title {
+            font-size: 22pt;
+        }
+        p.itemname {
+            font-weight: bold;
+            line-height: 150%;
+        }
+        hr {
+            width: 100%;
+            color: #d3d3d3;
+            background-color: #d3d3d3;
+            height: 1px;
+        }
+		table.items-header { background-color: #E3E3E3; }
+		table.expense { border-collapse: collapse; }
+		table.expense tr td { align: center; padding: 5px 10px; }
+		table.expense tr th { font-weight: bold; align: center; padding: 5px 10px; }
+		table.footer-text { margin: 10px; width: 100%; align: left; }
+		.notes { border: 1px solid #000; padding: 10px; margin: 10px 10px 10px 0; height: 120px; }
+		table.terms { border-collapse: collapse; }
+		table.terms tr td { align: left; padding: 5px 10px; }
+		table.terms tr th { font-weight: bold; align: left; padding: 5px 10px; }
+		.logo {
+			width: 100%;
+			height: auto;
+		}
+		p.nameandaddress {
+			padding-top: 3px; margin: 0 !important;
+		}
+		p.contact_info {
+			padding-top: 3px !important;
+		}
+</style>
+</head>
+
+	<!-- Get Header Height -->
+	<#assign hdr_height = salesorder.custbody_ss_anz_packslip_sub_hdr_hgt >
+	<#if hdr_height == 0>
+		<#assign hdr_height = 29>
+	</#if>
+	<!-- Get Header Height -->
+
+<body header="nlheader" header-height="${hdr_height}%" footer="nlfooter" footer-height="20pt" padding="0.3in 0.3in 0.3in 0.3in" size="A4">
+<br/>
+<table style="width: 100%;">
+	<tr>
+		<td>
+			<b>Bill To</b><br/>
+			<#if record.entity.address?has_content >			
+				${record.entity.address}
+			<#elseif salesorder.billaddress?has_content >				
+				${salesorder.billaddress}
+			<#else>
+				<#if record.entity.companyname?has_content>
+					${record.entity.companyname}<br/>
+				<#else>
+					${record.entity.firstname} ${record.entity.lastname}<br/>
+				</#if>
+			</#if>
+		</td>
+		<td>
+			<#if record.shipaddress?length != 0 >
+				<b>${record.shipaddress@label}</b><br/>
+				${record.shipaddress}
+			</#if>				
+		</td>
+	</tr>
+</table>
+
+<table class="body" style="width: 100%; margin-top: 10px;">
+<thead>
+	<tr>
+		<th>Purchase Order #</th>
+		<th>Sales Rep</th>
+		<th>Ship Date</th>
+		<th>Tracking Number</th>
+		<th>Customer Contact</th>
+	</tr>
+</thead>
+	<tr>
+		<td>${salesorder.otherrefnum}</td>
+		<td>${salesorder.salesrep}</td>
+		<td>${salesorder.shipdate}</td>
+		<td>${salesorder.linkedtrackingnumbers}</td>
+		<#if record.customer?has_content >
+			<td>${record.entity.companyname}<br/>${salesorder.customermain}<br/>${record.customer}<br/>${record.entity.firstname} ${record.entity.lastname}</td>
+		<#else>
+			<td>${salesorder.entity.companyname}<br/>${salesorder.customermain}<br/>${salesorder.entity.firstname} ${salesorder.entity.lastname}</td>
+		</#if>
+	</tr>
+</table>
+
+<#if salesorder.item?has_content>
+<#assign with_units = false>
+<#assign with_serial_lot = false>
+<#list salesorder.item as item>
+	<#if (item.units?has_content) ><#assign with_units = true></#if>
+	<#if item.custcol_ss_anz_is_serial || item.custcol_ss_anz_is_lot><#assign with_serial_lot = true></#if>
+</#list>
+
+<table class="itemtable" style="width: 100%; margin-top: 10px;">
+<thead>
+	<tr>
+		<th colspan="2" width="18%">SKU</th>
+        <th colspan="3" width="15%">Name</th>
+		<#if with_units><th colspan="2">Units</th></#if>
+		<th colspan="2">Ordered Qty</th>
+		<th colspan="2">Ship Qty</th>
+		<#if with_serial_lot><th colspan="2">Serial/Lot #</th></#if>
+	</tr>
+</thead>
+<#list salesorder.item as tranline>
+	<tr>
+		<!-- <td colspan="2">
+			<span class="itemname">${tranline.item}</span><br/>${tranline.description}
+		</td> -->
+
+		<td colspan="2"><span class="itemname">
+			<#assign itemDescription = tranline.item?html>
+			<#assign itemCode = tranline.itemid?html>
+			<#assign cleanedItemDescription = itemDescription?replace(tranline.displayname, "")?trim> ${cleanedItemDescription}</span>
+		</td>
+    	<td colspan="3">${tranline.item.displayname}</td>
+
+		<#if with_units>
+			<td colspan="2">${tranline.units}</td>
+		</#if>
+		<td colspan="2">${tranline.quantityordered}</td>
+		<td colspan="2">${tranline.quantity}</td>
+		<#if with_serial_lot>
+			<td colspan="2">${tranline.custcol_ss_anz_serial_lot_num}</td>
+		</#if>
+	</tr>
+	</#list>
+	</table>
+</#if>
+
+<!--<#if preferences.RETURNFORM && returnForm??>
+
+<hr />
+<div class="returnform">
+<table style="width: 100%; margin-top: 10px;"><tr>
+	<td><span class="nameandaddress">${companyInformation.companyName}</span></td>
+	<td align="right"><span class="number">${returnForm@title}</span></td>
+	</tr></table>
+
+<table style="width: 100%; margin-top: 10px;"><tr>
+	<td class="addressheader" colspan="4">${returnForm.returnAddress}</td>
+	<th>${returnForm.rmaNum}</th>
+	<th colspan="2">${returnForm.customerName}</th>
+	<th>${salesorder.tranid@label}</th>
+	</tr>
+	<tr>
+	<td class="address" colspan="4" rowspan="2">&nbsp;</td>
+	<td>&nbsp;</td>
+	<td colspan="2">${salesorder.entity}</td>
+	<td>${salesorder.tranid}</td>
+	</tr>
+	<tr>
+	<td colspan="4">&nbsp;</td>
+	</tr></table>
+
+<table class="itemtable" style="width: 100%; margin-top: 10px;">
+<thead>
+	<tr>
+	<th colspan="2">${returnForm.item}</th>
+	<th colspan="1">${returnForm.quantity}</th>
+	<th colspan="5">${returnForm.reason}</th>
+	</tr>
+</thead><tr>
+	<td colspan="8">&nbsp;</td>
+	</tr></table>
+</div>
+</#if>-->
+</body>
+</pdf>

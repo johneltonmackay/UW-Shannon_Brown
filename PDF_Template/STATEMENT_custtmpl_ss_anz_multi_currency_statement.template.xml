@@ -1,0 +1,333 @@
+<?xml version="1.0"?><!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd"><pdfset><#if statements?has_content><#list statements as statement>
+<pdf>
+<head>
+	<link name="NotoSans" type="font" subtype="truetype" src="${nsfont.NotoSans_Regular}" src-bold="${nsfont.NotoSans_Bold}" src-italic="${nsfont.NotoSans_Italic}" src-bolditalic="${nsfont.NotoSans_BoldItalic}" bytes="2" />
+	<#if .locale == "zh_CN">
+		<link name="NotoSansCJKsc" type="font" subtype="opentype" src="${nsfont.NotoSansCJKsc_Regular}" src-bold="${nsfont.NotoSansCJKsc_Bold}" bytes="2" />
+	<#elseif .locale == "zh_TW">
+		<link name="NotoSansCJKtc" type="font" subtype="opentype" src="${nsfont.NotoSansCJKtc_Regular}" src-bold="${nsfont.NotoSansCJKtc_Bold}" bytes="2" />
+	<#elseif .locale == "ja_JP">
+		<link name="NotoSansCJKjp" type="font" subtype="opentype" src="${nsfont.NotoSansCJKjp_Regular}" src-bold="${nsfont.NotoSansCJKjp_Bold}" bytes="2" />
+	<#elseif .locale == "ko_KR">
+		<link name="NotoSansCJKkr" type="font" subtype="opentype" src="${nsfont.NotoSansCJKkr_Regular}" src-bold="${nsfont.NotoSansCJKkr_Bold}" bytes="2" />
+	<#elseif .locale == "th_TH">
+		<link name="NotoSansThai" type="font" subtype="opentype" src="${nsfont.NotoSansThai_Regular}" src-bold="${nsfont.NotoSansThai_Bold}" bytes="2" />
+	</#if>
+	
+    <macrolist>
+        <macro id="nlheader">
+		    <!-- <table style="width: 100%; font-size: 10pt; height: 100.797px;">
+               <tr style="height: 52.2656px;">
+                  <td style="padding: 0px; height: 100.797px;" rowspan="3"><#if companyInformation.logoUrl?length != 0> <@filecabinet nstype="image" class="logo" style="width: 190px; height: 40px;" src="${subsidiary.logo@url}" /> </#if> ${companyInformation.companyName}<br />${companyInformation.addressText}</td>
+                  <td style="padding: 0px; height: 52.2656px;" align="right"><span style="font-size: 28pt;">Statement</span></td>
+               </tr>
+               <tr style="height: 29.8672px;">
+                  <td style="padding: 0px; height: 29.8672px;" align="right">
+				  							<p class="number po-details" style="text-align: right;"><strong>Date</strong>: ${statement.trandate}</p>
+						<p class="number po-details" style="text-align: right;"><strong>Amount Due</strong>: ${statement.amountDue}</p>
+						<p class="number po-details" style="text-align: right;"><strong>Currency</strong>: ${statement.currency}</p>
+				  </td>
+               </tr>
+            </table> -->
+            <table style="width: 100%; font-size: 10pt; height: 100.797px;">
+				<tr>
+					<td style="padding: 0px; height: 100.797px;" rowspan="3">
+						<#if companyInformation.logoUrl?length != 0>
+							<@filecabinet nstype="image" class="logo" style="width: 190px; height: 40px;" src="${subsidiary.logo@url}" />
+					    </#if>
+						<br/>
+						<p class="nameandaddress" style="font-size: 11pt;"><b>${subsidiary.name}</b></p>
+						<p class="nameandaddress">
+							<#if subsidiary.addressee?has_content >${subsidiary.addressee},</#if>
+							<#if subsidiary.addr1?has_content >${subsidiary.addr1},</#if>
+							<#if subsidiary.addr2?has_content >${subsidiary.addr2},</#if>
+							<#if subsidiary.city?has_content >${subsidiary.city},</#if>
+							<#if subsidiary.state?has_content >${subsidiary.state},</#if>
+							<#if subsidiary.zip?has_content >${subsidiary.zip},</#if>
+							<#if subsidiary.country?has_content >${subsidiary.country}</#if>
+						</p>
+						<p class="nameandaddress contact_info"><b>P:</b> ${subsidiary.custrecord_ss_anz_sub_phone} </p>
+						<p class="nameandaddress contact_info"><b>E:</b> ${subsidiary.custrecord_ss_anz_sub_email}</p>
+						<p class="nameandaddress contact_info"><b>W:</b> ${subsidiary.custrecord_ss_anz_sub_url}</p>
+						<p class="nameandaddress contact_info">
+							<#if subsidiary.country = "Australia"><b>ABN:</b></#if>
+							<#if subsidiary.country = "New Zealand"><b>NZBN:</b></#if>
+							${subsidiary.federalidnumber}
+						</p>
+					</td>
+					<td style="width: 50%;" align="right">
+						<p class="title po-details" style="text-align: right;">Statement</p>
+						<p class="number po-details" style="text-align: right;"><strong>Date</strong>: ${statement.trandate}</p>
+						<p class="number po-details" style="text-align: right;"><strong>Amount Due</strong>: ${statement.amountDue}</p>
+						<p class="number po-details" style="text-align: right;"><strong>Currency</strong>: ${statement.currency}</p>
+					</td>
+				</tr>
+			</table>
+
+			<!-- <table style="width: 100%;">
+				<tr>
+					<td>
+						<p class="nameandaddress" style="font-size: 11pt;"><b>${subsidiary.name}</b></p>
+						<p class="nameandaddress">
+							<#if subsidiary.addressee?has_content >${subsidiary.addressee},</#if>
+							<#if subsidiary.addr1?has_content >${subsidiary.addr1},</#if>
+							<#if subsidiary.addr2?has_content >${subsidiary.addr2},</#if>
+							<#if subsidiary.city?has_content >${subsidiary.city},</#if>
+							<#if subsidiary.state?has_content >${subsidiary.state},</#if>
+							<#if subsidiary.zip?has_content >${subsidiary.zip},</#if>
+							<#if subsidiary.country?has_content >${subsidiary.country}</#if>
+						</p>
+						<p class="nameandaddress contact_info"><b>P:</b> ${subsidiary.custrecord_ss_anz_sub_phone} </p>
+						<p class="nameandaddress contact_info"><b>E:</b> ${subsidiary.custrecord_ss_anz_sub_email}</p>
+						<p class="nameandaddress contact_info"><b>W:</b> ${subsidiary.custrecord_ss_anz_sub_url}</p>
+						<p class="nameandaddress contact_info">
+							<#if subsidiary.country = "Australia"><b>ABN:</b></#if>
+							<#if subsidiary.country = "New Zealand"><b>NZBN:</b></#if>
+							${subsidiary.federalidnumber}
+						</p>
+					</td>
+				</tr>
+			</table> -->
+        </macro>
+		<macro id="nlfooter">
+			<table class="footer" style="width: 100%; position: absolute; bottom: 100px;">
+				<#assign footer_msg = subsidiary.custrecord_ss_anz_sub_ftrmsg_so >
+				<tr>
+					<td align="left" style="white-space: nowrap; overflow: hidden; font-size: 10px;">
+						<strong>BANK ACCOUNT DETAILS: </strong><br />ENTITY BRANDS PTY LTD<br />BSB: 012204<br />ACC: 228799349<br /><br />${footer_msg[0..*150]}&nbsp;<br/><br/>
+					</td>
+				</tr>
+				<tr>
+					<td align="right"><pagenumber/> of <totalpages/></td>
+				</tr>
+			</table>
+		</macro>
+    </macrolist>
+    <style type="text/css">* {
+		<#if .locale == "zh_CN">
+			font-family: NotoSans, NotoSansCJKsc, sans-serif;
+		<#elseif .locale == "zh_TW">
+			font-family: NotoSans, NotoSansCJKtc, sans-serif;
+		<#elseif .locale == "ja_JP">
+			font-family: NotoSans, NotoSansCJKjp, sans-serif;
+		<#elseif .locale == "ko_KR">
+			font-family: NotoSans, NotoSansCJKkr, sans-serif;
+		<#elseif .locale == "th_TH">
+			font-family: NotoSans, NotoSansThai, sans-serif;
+		<#else>
+			font-family: NotoSans, sans-serif;
+		</#if>
+			font-size: 9pt;
+		}
+		table {
+			table-layout: auto;
+			width: 100%;
+			display: block;
+		}
+        th {
+            font-weight: bold;
+            vertical-align: middle;
+            padding: 5px 6px 3px;
+            background-color: #e3e3e3;
+            color: #333333;
+        }
+        td {
+            padding: 4px 6px;
+        }
+		td p { align:left }
+        b {
+            font-weight: bold;
+            color: #333333;
+        }
+        table.header td {
+            padding: 0px;
+        }
+        table.header p.po-details {
+            padding-top: 10px !important; margin: 0 !important;
+        }
+        table.footer td {
+            padding: 0px;
+        }
+        table.itemtable th {
+            padding-bottom: 10px;
+            padding-top: 10px;
+        }
+        table.body td {
+            padding-top: 2px;
+        }
+        table.total {
+            page-break-inside: avoid;
+        }
+		.services tr td { border-collapse: collapse; border: 1px solid #999999; padding: 5px 10px; margin: 0; }
+		.services tr { padding: 0; margin: 0; }
+		.services tr th { padding: 5px 10px; color: white; }
+		.services-header th { background-color: #004781 !important; }
+        tr.totalrow {
+            background-color: #e3e3e3;
+            line-height: 200%;
+        }
+        td.totalboxtop {
+            background-color: #e3e3e3;
+        }
+        td.addressheader {
+            padding-top: 6px;
+            padding-bottom: 2px;
+        }
+        td.address {
+            padding-top: 0px;
+        }
+        td.totalboxmid {
+            font-size: 28pt;
+            padding-top: 20px;
+            background-color: #e3e3e3;
+        }
+        td.totalboxbot {
+            background-color: #e3e3e3;
+            font-weight: bold;
+        }
+        p.title {
+            font-size: 22pt;
+        }
+        p.itemname {
+            font-weight: bold;
+            line-height: 150%;
+        }
+        hr {
+            width: 100%;
+            color: #d3d3d3;
+            background-color: #d3d3d3;
+            height: 1px;
+        }
+		table.items-header { background-color: #E3E3E3; }
+		table.expense { border-collapse: collapse; }
+		table.expense tr td { align: center; padding: 5px 5px; }
+		table.expense tr th { font-weight: bold; align: center; padding: 5px 5px; }
+		table.footer-text { margin: 10px; width: 100%; align: left; }
+		.notes { border: 1px solid #000; padding: 10px; margin: 10px 10px 10px 0; height: 120px; }
+		table.terms { border-collapse: collapse; }
+		table.terms tr td { align: left; padding: 5px 10px; }
+		table.terms tr th { font-weight: bold; align: left; padding: 5px 10px; }
+		.logo {
+			width: 100%;
+			height: auto;
+		}
+		p.nameandaddress {
+			padding-top: 3px; margin: 0 !important;
+		}
+		p.contact_info {
+			padding-top: 3px !important;
+		}
+</style>
+</head>
+
+	<!-- Get Header Height -->
+	<#assign hdr_height = subsidiary.custrecord_ss_anz_sub_hdr_hght >
+	<#if hdr_height == 0>
+		<#assign hdr_height = 29>
+	</#if>
+	<!-- Get Header Height -->
+	
+<body header="nlheader" header-height="${hdr_height}%" footer="nlfooter" footer-height="65pt" padding="0.3in 0.3in 0.3in 0.3in" size="A4">
+    <table style="width: 100%; margin-top: 10px;"><tr>
+	<td class="addressheader" colspan="3">${statement.billaddress@label}</td>
+	</tr>
+	<tr>
+	<td class="address" colspan="3">${statement.billaddress}</td>
+	</tr></table>
+
+<#if statement.lines?has_content>
+
+<table class="itemtable" style="width: 100%; margin-top: 10px;"><!-- start items --><#list statement.lines as line><#if line_index==0>
+<thead>
+	<tr>
+	<th colspan="3">${line.datecol@label}</th>
+	<th colspan="4">Invoice</th>
+	<th colspan="3">PO</th>
+	<th colspan="3">Due Date</th>
+	<th align="right" colspan="3">${line.charge@label}</th>
+	<th align="right" colspan="4">${line.payment@label}</th>
+	<th align="right" colspan="4">${line.balance@label}</th>
+	</tr>
+</thead>
+</#if>
+
+<tr>
+	<td colspan="3">${line.datecol}</td>
+	<td colspan="4">${line.description}</td>
+	<td colspan="3">${line.otherrefnum}</td>
+	<td colspan="3">${line.duedate}</td>
+	<#if line.description?contains("Credit ")>
+		<td align="right" colspan="3">(${line.payment})</td>
+		<td align="right" colspan="4">&nbsp;</td>
+	<#else>
+		<td align="right" colspan="3">${line.charge}</td>
+		<td align="right" colspan="4">${line.payment}</td>
+	</#if>
+
+	<#if line.description?contains("Invoice ")>
+		<td align="right" colspan="4">${line.amountremaining}</td>
+	<#elseif line.description?contains("Credit ")>
+		<td align="right" colspan="4">(${line.amountremaining})</td>
+	<#else>
+		<td align="right" colspan="4">${line.balance}</td>
+	</#if>
+</tr>
+
+</#list><!-- end items --></table>
+
+<table class="aging" style="width: 100%; margin-top: 10px;"><tr>
+	<th>${statement.aging1@label}</th>
+	<th>${statement.aging2@label}</th>
+	<th>${statement.aging3@label}</th>
+	<th>${statement.aging4@label}</th>
+	<th>${statement.aging5@label}</th>
+	<th>${statement.agingbal@label}</th>
+	</tr>
+	<tr>
+	<td>${statement.aging1}</td>
+	<td>${statement.aging2}</td>
+	<td>${statement.aging3}</td>
+	<td>${statement.aging4}</td>
+	<td>${statement.aging5}</td>
+	<td>${statement.agingbal}</td>
+	</tr></table>
+</#if>
+
+<!--<#if preferences.RETURNFORM && remittanceSlip??>
+
+<hr />
+<div class="remittanceSlip">
+<table style="width: 100%; margin-top: 10px;"><tr>
+	<td><span class="nameandaddress">${subsidiary.companyName}</span></td>
+	<td align="right"><span class="number">${remittanceSlip@title}</span></td>
+	</tr></table>
+
+<table style="width: 100%; margin-top: 10px;"><tr>
+	<th>${remittanceSlip.customername@label}</th>
+	<th>${statement.trandate@label}</th>
+	<th>${statement.amountDue@label}</th>
+	<th>${remittanceSlip.amountPaid@label}</th>
+	</tr>
+	<tr>
+	<td>${subsidiary.addressText}</td>
+	<td>${statement.trandate}</td>
+	<td align="right">${statement.amountDue}</td>
+	<td>&nbsp;</td>
+	</tr></table>
+
+<table style="width: 100%;"><tr>
+	<th>${remittanceSlip.ccinfo@label}</th>
+	<th>${remittanceSlip.companyaddress@label}</th>
+	</tr>
+	<tr>
+	<td>${remittanceSlip.ccinfo}</td>
+	<td>${subsidiary.addressText}</td>
+	</tr></table>
+</div>
+</#if>-->
+</body></pdf></#list>
+<#else><pdf><head></head><body>
+
+<p>Please use Single Currency Advanced Printing Template</p>
+</body>
+</pdf></#if></pdfset>

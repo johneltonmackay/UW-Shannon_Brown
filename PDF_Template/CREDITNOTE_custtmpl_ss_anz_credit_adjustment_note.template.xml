@@ -1,0 +1,380 @@
+<?xml version="1.0"?><!DOCTYPE pdf PUBLIC "-//big.faceless.org//report" "report-1.1.dtd">
+<pdf>
+<head>
+	<link name="NotoSans" type="font" subtype="truetype" src="${nsfont.NotoSans_Regular}" src-bold="${nsfont.NotoSans_Bold}" src-italic="${nsfont.NotoSans_Italic}" src-bolditalic="${nsfont.NotoSans_BoldItalic}" bytes="2" />
+	<#if .locale == "zh_CN">
+		<link name="NotoSansCJKsc" type="font" subtype="opentype" src="${nsfont.NotoSansCJKsc_Regular}" src-bold="${nsfont.NotoSansCJKsc_Bold}" bytes="2" />
+	<#elseif .locale == "zh_TW">
+		<link name="NotoSansCJKtc" type="font" subtype="opentype" src="${nsfont.NotoSansCJKtc_Regular}" src-bold="${nsfont.NotoSansCJKtc_Bold}" bytes="2" />
+	<#elseif .locale == "ja_JP">
+		<link name="NotoSansCJKjp" type="font" subtype="opentype" src="${nsfont.NotoSansCJKjp_Regular}" src-bold="${nsfont.NotoSansCJKjp_Bold}" bytes="2" />
+	<#elseif .locale == "ko_KR">
+		<link name="NotoSansCJKkr" type="font" subtype="opentype" src="${nsfont.NotoSansCJKkr_Regular}" src-bold="${nsfont.NotoSansCJKkr_Bold}" bytes="2" />
+	<#elseif .locale == "th_TH">
+		<link name="NotoSansThai" type="font" subtype="opentype" src="${nsfont.NotoSansThai_Regular}" src-bold="${nsfont.NotoSansThai_Bold}" bytes="2" />
+	</#if>
+	
+    <macrolist>
+        <macro id="nlheader">
+			 <table class="header" style="width: 100%;">
+				<tr>
+					<td style="width: 50%; text-align: left;">
+						<#if subsidiary.logo?length != 0 >
+							<img src="${subsidiary.logo@url}" class="logo" style="width: 190px; height: 40px"/>
+						<#elseif companyInformation.logoUrl?length != 0 >
+							<img src="${companyInformation.logoUrl}" class="logo" style="width: 190px; height: 40px"/>
+						</#if>
+					</td>
+					<td style="width: 50%;" align="right">
+						<p class="title po-details" style="text-align: right;">Credit Adjustment Note</p>
+						<!-- <p class="title po-details" style="text-align: right;">${record@title}</p> -->
+						<p class="number po-details" style="text-align: right;"><strong>Document Number</strong>: ${record.tranid}</p>
+						<p class="number po-details" style="text-align: right;"><strong>Date</strong>: ${record.trandate}</p>
+					</td>
+				</tr>
+			</table>
+
+            <!-- <table class="header" style="width: 100%;">
+				<tr>
+					<td style="width: 50%; text-align: left;">
+						<#if subsidiary.logo?length != 0 >
+							<img src="${subsidiary.logo@url}" class="logo" />
+						<#elseif companyInformation.logoUrl?length != 0 >
+							<img src="${companyInformation.logoUrl}" class="logo" />
+						</#if>
+					</td>
+					<td style="width: 50%;" align="right">
+						<p class="title po-details" style="text-align: right;">Credit Adjustment Note</p>
+						<p class="number po-details" style="text-align: right;"><strong>Document Number</strong>: ${record.tranid}</p>
+						<p class="number po-details" style="text-align: right;"><strong>Date</strong>: ${record.trandate}</p>
+					</td>
+				</tr>
+			</table> -->
+
+			<table style="width: 100%;">
+				<tr>
+					<td>
+						<p class="nameandaddress" style="font-size: 11pt;"><b>${subsidiary.name}</b></p>
+						<#if subsidiary.addr1?length != 0 >
+							<p class="nameandaddress">
+								<#if subsidiary.addressee?has_content >${subsidiary.addressee},</#if>
+								<#if subsidiary.addr1?has_content >${subsidiary.addr1},</#if>
+								<#if subsidiary.addr2?has_content >${subsidiary.addr2},</#if>
+								<#if subsidiary.city?has_content >${subsidiary.city},</#if>
+								<#if subsidiary.state?has_content >${subsidiary.state},</#if>
+								<#if subsidiary.zip?has_content >${subsidiary.zip},</#if>
+								<#if subsidiary.country?has_content >${subsidiary.country}</#if>
+							</p>
+						<#else>
+							<p class="nameandaddress">
+								<#if companyInformation.addressee?has_content >${companyInformation.addressee},</#if>
+								<#if companyInformation.address1?has_content >${companyInformation.address1},</#if>
+								<#if companyInformation.address2?has_content >${companyInformation.address2},</#if>
+								<#if companyInformation.city?has_content >${companyInformation.city},</#if>
+								<#if companyInformation.state?has_content >${companyInformation.state},</#if>
+								<#if companyInformation.zip?has_content >${companyInformation.zip},</#if>
+								<#if companyInformation.country?has_content >${companyInformation.country}</#if>
+							</p>
+						</#if>
+						<#if subsidiary.custrecord_ss_anz_sub_phone?has_content>
+							<p class="nameandaddress contact_info"><b>P:</b> ${subsidiary.custrecord_ss_anz_sub_phone} </p>
+						<#else>
+							<p class="nameandaddress contact_info"><b>P:</b> ${companyInformation.custrecord_ss_anz_sub_phone} </p>
+						</#if>
+						<#if subsidiary.custrecord_ss_anz_sub_email?has_content>
+							<p class="nameandaddress contact_info"><b>E:</b> ${subsidiary.custrecord_ss_anz_sub_email}</p>
+						<#else>
+							<p class="nameandaddress contact_info"><b>E:</b> ${companyInformation.custrecord_ss_anz_sub_email}</p>
+						</#if>
+						<#if subsidiary.custrecord_ss_anz_sub_url?has_content>
+							<p class="nameandaddress contact_info"><b>W:</b> ${subsidiary.custrecord_ss_anz_sub_url}</p>
+						<#else>
+							<p class="nameandaddress contact_info"><b>W:</b> ${companyInformation.custrecord_ss_anz_sub_url}</p>
+						</#if>
+						<p class="nameandaddress contact_info">
+							<#if subsidiary.country = "Australia"><b>ABN:</b></#if>
+							<#if subsidiary.country = "New Zealand"><b>NZBN:</b></#if>
+							${subsidiary.federalidnumber}
+						</p>
+					</td>
+				</tr>
+			</table>
+        </macro>
+        <macro id="nlfooter">
+			<table class="footer" style="width: 100%;">
+				<#assign footer_msg = subsidiary.custrecord_ss_anz_sub_ftrmsg_creditmemo >
+				<tr><td colspan="2">${footer_msg[0..*150]}&nbsp;<br/><br/></td></tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td align="right"><pagenumber/> of <totalpages/></td>
+				</tr>
+			</table>
+        </macro>
+    </macrolist>
+    <style type="text/css">* {
+		<#if .locale == "zh_CN">
+			font-family: NotoSans, NotoSansCJKsc, sans-serif;
+		<#elseif .locale == "zh_TW">
+			font-family: NotoSans, NotoSansCJKtc, sans-serif;
+		<#elseif .locale == "ja_JP">
+			font-family: NotoSans, NotoSansCJKjp, sans-serif;
+		<#elseif .locale == "ko_KR">
+			font-family: NotoSans, NotoSansCJKkr, sans-serif;
+		<#elseif .locale == "th_TH">
+			font-family: NotoSans, NotoSansThai, sans-serif;
+		<#else>
+			font-family: NotoSans, sans-serif;
+		</#if>
+			font-size: 9pt;
+		}
+		table {
+			table-layout: auto;
+			width: 100%;
+		}
+        th {
+            font-weight: bold;
+            vertical-align: middle;
+            padding: 5px 6px 3px;
+            background-color: #e3e3e3;
+            color: #333333;
+        }
+        td {
+            padding: 4px 6px;
+        }
+		td p { align:left }
+        b {
+            font-weight: bold;
+            color: #333333;
+        }
+        table.header td {
+            padding: 0px;
+        }
+        table.footer td {
+            padding: 0px;
+        }
+        table.itemtable th {
+            padding-bottom: 10px;
+            padding-top: 10px;
+        }
+        table.body td {
+            padding-top: 2px;
+        }
+        table.total {
+            page-break-inside: avoid;
+        }
+		.services tr td { border-collapse: collapse; border: 1px solid #999999; padding: 5px 10px; margin: 0; }
+		.services tr { padding: 0; margin: 0; }
+		.services tr th { padding: 5px 10px; color: white; }
+		.services-header th { background-color: #004781 !important; }
+        tr.totalrow {
+            background-color: #e3e3e3;
+            line-height: 200%;
+        }
+        td.totalboxtop {
+            font-size: 12pt;
+            background-color: #e3e3e3;
+        }
+        td.addressheader {
+            padding-top: 6px;
+            padding-bottom: 2px;
+        }
+        td.address {
+            padding-top: 0px;
+        }
+        td.totalboxmid {
+            font-size: 28pt;
+            padding-top: 20px;
+            background-color: #e3e3e3;
+        }
+        td.totalboxbot {
+            background-color: #e3e3e3;
+            font-weight: bold;
+        }
+        p.title {
+            font-size: 22pt;
+        }
+        p.itemname {
+            font-weight: bold;
+            line-height: 150%;
+        }
+        hr {
+            width: 100%;
+            color: #d3d3d3;
+            background-color: #d3d3d3;
+            height: 1px;
+        }
+		.gray-bg { background-color: #E3E3E3; }
+		.total-amount { padding: 5px 10px 5px 10px; align: right; margin-left: 50px; }
+		.logo {
+			width: 100%;
+			height: auto;
+		}
+		p.nameandaddress {
+			padding-top: 3px; margin: 0 !important;
+		}
+		p.contact_info {
+			padding-top: 3px !important;
+		}
+</style>
+</head>
+
+	<!-- Get Header Height -->
+	<#assign hdr_height = subsidiary.custrecord_ss_anz_sub_hdr_hght >
+	<#if hdr_height == 0>
+		<#assign hdr_height = 29>
+	</#if>
+	<!-- Get Header Height -->
+
+<body header="nlheader" header-height="${hdr_height}%" footer="nlfooter" footer-height="20pt" padding="0.3in 0.3in 0.3in 0.3in" size="A4">
+
+<table style="width: 100%;">		
+	<tr>
+		<td colspan="3">
+			<#if record.billaddress?length != 0 >
+				<b>Customer</b><br/>
+				<#if record.entity.companyname?has_content>
+					${record.entity.companyname}<br/>
+				<#else>
+					${record.entity.firstname} ${record.entity.lastname}<br/>
+					<!-- ${record.entity}<br/> -->
+				</#if>
+				${record.billaddress}
+			<#elseif record.entity?length != 0 >
+				<b>Customer</b><br/>
+				<#if record.entity.companyname?has_content>
+					${record.entity.companyname}<br/>
+				<#else>
+					${record.entity.firstname} ${record.entity.lastname}<br/>
+					<!-- ${record.entity}<br/> -->
+				</#if>
+				<#if record.entity.address?length != 0 >
+					${record.entity.address}
+				</#if>			
+			</#if>
+		</td>
+		<td colspan="2" class="text-right">
+			<table class="gray-bg" style="padding: 5px 0 0 5px;">
+				<tr style="align: left; text-transform: uppercase;"><td>${record.total@label}</td></tr>
+				<tr><td class="total-amount"><span style="font-size: 22pt;">${record.total}</span></td></tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+
+      <#if record.item?has_content> <#assign with_units = false> <#assign with_quantity = false> <#assign with_rate = false> <#list record.item as item> <#if (item.units?has_content) ><#assign with_units = true></#if> <#if (item.quantity?has_content) ><#assign with_quantity = true></#if> <#if (item.rate?length != 0) ><#assign with_rate = true></#if> </#list>
+      <table class="itemtable" style="width: 100%; padding-top: 10px;">
+         <!-- start items -->
+         <thead>
+            <tr>
+               <th colspan="2" width="18%">SKU</th>
+               <th colspan="1" width="15%">Name</th>
+               <th colspan="2" align="right" width="7%">Colour</th>
+               <th colspan="1" align="right" width="10%">Size</th>
+               <#if with_quantity>
+               <th colspan="2" align="right" width="10%">Quantity</th>
+               </#if> <#if with_units>
+               <th colspan="1" align="right" width="10%">Units</th>
+               </#if> <#if with_rate>
+               <th colspan="2" align="right" width="10%">Price</th>
+               </#if>
+               <th colspan="2" align="right" width="13%">Amount</th>
+               <th colspan="1" align="right" width="7%">GST</th>
+            </tr>
+         </thead>
+         <#list record.item as item>
+         <tr>
+            <td colspan="2"><span class="itemname">
+            <#assign itemDescription = item.item?html>
+            <#assign itemCode = item.itemid?html>
+            <#assign cleanedItemDescription = itemDescription?replace(item.custcol_savvy_itemdisplayname, "")?trim> ${cleanedItemDescription}</span>
+            </td>
+            <td colspan="1"><span class="Name"> ${item.custcol_savvy_itemdisplayname}</span></td>
+            <td colspan="2" align="right"><span class="colour"> ${item.custcol3}</span></td>
+            <td colspan="1" align="right"><span class="size"> ${item.custcol4}</span></td>
+            <#if with_quantity>
+            <td colspan="2" align="right">${item.quantity}</td>
+            </#if> <#if with_units>
+            <td colspan="1" align="right">${item.units}</td>
+            </#if> <#if with_rate>
+            <td colspan="2" align="right">${item.rate}</td>
+            </#if>
+            <td colspan="2" align="right">${item.amount}</td>
+            <td colspan="1" align="right">${item.taxrate1}</td>
+         </tr>
+         </#list><!-- end items -->
+      </table>
+      </#if>
+
+	  
+<!-- <#if record.item?has_content>
+<#assign with_units = false>
+<#assign with_quantity = false>
+<#assign with_rate = false>
+<#list record.item as item>
+	<#if (item.units?has_content) ><#assign with_units = true></#if>
+	<#if (item.quantity?has_content) ><#assign with_quantity = true></#if>
+	<#if (item.rate?length != 0) ><#assign with_rate = true></#if>
+</#list>
+
+<table class="itemtable" style="width: 100%; padding-top: 10px;">
+<thead>
+	<tr>
+	<th colspan="2">Name</th>
+	<#if with_quantity><th align="center" colspan="2">Quantity</th></#if>
+	<#if with_units><th align="right" colspan="1">Units</th></#if>
+	<#if with_rate><th align="right" colspan="2">Price</th></#if>
+	<th align="right" colspan="2">Amount</th>
+	<th align="right" colspan="1">GST</th>
+	<th align="right" colspan="2">GST Amt</th>
+	<th align="right" colspan="2">Gross Amt</th>
+	</tr>
+</thead>
+
+	<#list record.item as item>
+	<tr>
+	<td colspan="2"><span class="itemname">${item.item}</span><br />${item.description}</td>
+	<#if with_quantity><td align="center" colspan="2" line-height="150%">${item.quantity}</td></#if>
+	<#if with_units><td align="right" colspan="1">${item.units}</td></#if>
+	<#if with_rate><td align="right" colspan="2">${item.rate}</td></#if>
+	<td align="right" colspan="2">${item.amount}</td>
+	<td align="right" colspan="1">${item.taxrate1}</td>
+	<td align="right" colspan="2">${item.tax1amt}</td>
+	<td align="right" colspan="2">${item.grossamt}</td>
+	</tr>
+	</#list>
+</table> -->
+
+<hr />
+</#if>
+
+<table class="total" style="width: 100%; padding-top: 10px;"><tr>
+	<td colspan="4">&nbsp;</td>
+	<td align="right"><b>${record.subtotal@label}</b></td>
+	<td align="right">${record.subtotal}</td>
+	</tr>
+	<#if (record.discounttotal != 0)><tr>
+	<td colspan="4">&nbsp;</td>
+	<td align="right"><b>${record.discounttotal@label}</b></td>
+	<td align="right">${record.discounttotal}</td>
+	</tr></#if>
+	<tr>
+	<td colspan="4">&nbsp;</td>
+	<td align="right"><b>GST Total</b></td>
+	<td align="right">${record.taxtotal}</td>
+	</tr>
+	<#if record.shippingcost?has_content>
+	<#if (record.shippingcost gt 0)><tr>
+	<td colspan="4">&nbsp;</td>
+	<td align="right"><b>${record.shippingcost@label}</b></td>
+	<td align="right">${record.shippingcost}</td>
+	</tr></#if>
+	</#if>
+	<tr class="totalrow">
+	<td background-color="#ffffff" colspan="4">&nbsp;</td>
+	<td align="right"><b>${record.total@label}</b></td>
+	<td align="right">${record.total}</td>
+	</tr></table>
+
+</body>
+</pdf>
